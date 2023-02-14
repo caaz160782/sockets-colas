@@ -54,10 +54,7 @@ class TicketControl {
         
         this.guardarDB();
         return 'Ticket'+ ticket.numero;
-    }
-
-
-   
+    }   
 
     atenderTicket(escritorio){
         //no hay tickets  

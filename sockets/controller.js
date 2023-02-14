@@ -12,13 +12,47 @@ const socketController = (socket) => {
         const ultimo= ticketControl.ultimo;
         callback(ultimo);        
        })
+    //cuando un cliente se conecta
+    socket.emit('estado-actual',ticketControl.ultimos4);   
+    socket.emit('tickets-pendientes',ticketControl.tickets.length);   
+
+
     
     socket.on('siguiente-ticket', ( payload, callback ) => {
         const siguiente= ticketControl.siguiente();
-        callback(siguiente);        
-        //TODO NOTIFICAR que hay un nuevo ticket pendiente      
+        callback(siguiente);     
+        socket.broadcast.emit('tickets-pendientes',ticketControl.tickets.length);      
+      })   
 
-    })   
+    socket.on('atender-ticket', ( {escritorio}, callback ) => {
+       if(!escritorio){
+        return callback({
+            ok:false,
+            msg:"El escritorio es obligatorio"
+        })
+      }
+      const ticket = ticketControl.atenderTicket(escritorio);
+      socket.broadcast.emit('estado-actual',ticketControl.ultimos4);   
+      socket.emit('tickets-pendientes',ticketControl.tickets.length);   
+      socket.broadcast.emit('tickets-pendientes',ticketControl.tickets.length);   
+      if(!ticket){
+        callback({
+            ok:false,
+            msg:"Ya no hay tickets"
+        })
+      }else{
+        
+        callback({
+            ok:true,
+            ticket
+        })
+          
+      }
+    })     
+
+
+
+
 
 }
 
