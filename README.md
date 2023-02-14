@@ -1,5 +1,5 @@
-# Socket Server Basico
+# Socket Server Basico Colas
 
-Un servidor de Websockets usando Node, Express y Socket.io
+ejecutar nodemon app.js
 
-Temas cubiertos en mi curso de Node de cero a experto
+
